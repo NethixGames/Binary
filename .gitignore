@@ -1,0 +1,6 @@
+# Unnecessary folders
+.idea/
+.venv/
+
+# Lock files
+poetry.lock
