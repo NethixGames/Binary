@@ -66,7 +66,6 @@ class Buffer:
 
 
 class BinaryStream(Buffer):
-
     def read_bool(self) -> bool:
         return struct.unpack(ByteType.BOOLEAN, self.read(1))[0]
 
