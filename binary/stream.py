@@ -74,7 +74,7 @@ class BinaryStream(Buffer):
 
     def read_byte(self, *, unsigned: bool = True, order: str = ByteOrder.BIG_ENDIAN) -> int:
         __format = order + (ByteType.UNSIGNED_CHAR if unsigned else ByteType.SIGNED_CHAR)
-        return struct.unpack(__format, self.read(ByteSize.SHORT))[0]
+        return struct.unpack(__format, self.read(1))[0]
 
     def write_byte(self, value: int, *, unsigned: bool = True, order: str = ByteOrder.BIG_ENDIAN) -> None:
         __format = order + (ByteType.UNSIGNED_CHAR if unsigned else ByteType.SIGNED_CHAR)
@@ -91,7 +91,7 @@ class BinaryStream(Buffer):
     def read_triad(self, *, unsigned: bool = True, order: str = ByteOrder.BIG_ENDIAN) -> int:
         __bytes = self.read(3)
         __format = order + (ByteType.UNSIGNED_INT if unsigned else ByteType.UNSIGNED_INT)
-        __buffer = b"\x00" + __bytes if unsigned else (b"\x00" if __bytes[2] < 0x80 else b"\xff") + __bytes
+        __buffer = (b"\x00" + __bytes) if unsigned else (b"\x00" if __bytes[2] < 0x80 else b"\xff" + __bytes)
         return struct.unpack(__format, __buffer)[0]
 
     def write_triad(self, value: int, *, unsigned: bool = True, order: str = ByteOrder.BIG_ENDIAN) -> None:
